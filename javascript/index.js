@@ -8,46 +8,30 @@ let display = document.getElementById('display');
 const appendNumber = (number) => {
     // display.value = '';
     currentInput += number;
-    updatedDisplay(currentInput);
+    updatedDisplay();
 }
 
 //Append decimal point to Number
 const appendPoint = (point) => {
     currentInput += point;
-    updatedDisplay(currentInput);
+    updatedDisplay();
 }
 
 //Displaying Operator 
 const appendOperator = (operator) => {
-    if (previousInput !== '') {
-        calculate()
-    } else {
-        previousInput = currentInput;
-        updatedDisplay(operator);
+    if (currentInput == '') return;
+    if (previousInput != '') calculate();
+    console.log(currentOperator)
+    if (currentOperator != '') {
+        currentOperator = ''
     }
-
-    if (currentInput == '' && previousInput !== '') return;
-    else {
-        currentOperator = operator;
-        updatedDisplay(`${previousInput}${currentOperator}`)
-
-    }
-
+    currentOperator = operator;
+    previousInput = currentInput;
     currentInput = '';
-    console.log(previousInput)
-    console.log(currentOperator);
-    console.log(currentInput)
+    updatedDisplay();
 }
 
-// const appendOperation = (operator) => {
-
-// }
-
-
 const calculate = () => {
-    console.log(previousInput)
-    console.log(currentOperator);
-    console.log(currentInput)
     if (previousInput == '' && currentInput == '') return;
 
     let prev = parseFloat(previousInput);
@@ -75,13 +59,10 @@ const calculate = () => {
             return;
     }
 
-    previousInput = result;
+    currentInput = result.toString();
     currentOperator = '';
-    currentInput = '';
-    console.log(previousInput)
-    console.log(currentOperator);
-    console.log(currentInput)
-    updatedDisplay(`${previousInput}`)
+    previousInput = '';
+    updatedDisplay()
 }
 
 const clearDisplay = () => {
@@ -91,6 +72,14 @@ const clearDisplay = () => {
     display.value = '0';
 }
 
-const updatedDisplay = (updated) => {
-    display.value = updated;
+const startBtn = () => {
+    currentInput = '';
+    currentOperator = '';
+    previousInput = '';
+    display.value = '';
+
+}
+
+const updatedDisplay = () => {
+    display.value = `${previousInput}${currentOperator}${currentInput}`;
 }
